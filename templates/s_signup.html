@@ -1,0 +1,38 @@
+{% extends 'login.html' %}
+
+
+
+{% block content %}
+<div class="panel panel-default">
+ <div class="panel-heading">
+					<h2 class="panel-title">
+						<span class="glyphicon glyphicon-log-in"></span> 
+						Zarejestruj się
+					</h2>
+				</div>
+  	<div class="panel-body">
+  <form method="post">
+  	<div class="form-group">
+	<center>
+     {% csrf_token %}
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+    
+ 
+    
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
+	</center>
+	</div>
+	<center>
+    <button type="submit" class="btn btn-default">Zarejestruj się</button>
+	</center>
+  </form>
+  </div>
+  </div>
+{% endblock %}

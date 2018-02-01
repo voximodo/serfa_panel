@@ -1,0 +1,86 @@
+{% extends 'base_h.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+			{% load staticfiles %}
+
+  <div class="col-sm-6">
+ <center>
+  		<div class="panel panel-default" style="display: inline-block;  width: 400px;" >
+				<div class="panel-heading">
+					<h1 class="panel-title"><span class="glyphicon glyphicon-random"></span>  <strong>Witaj {{ username }}!</strong></h1>
+				</div>
+				<div class="list-group">
+				 
+					<a href="{% url 'changepassword' %}" class="list-group-item">Zmień hasło</a>
+				
+				</div>
+			</div>
+			</center>
+			{% for key, value in mes.items %}
+			<center>
+			  		<div class="panel panel-default" style="display: inline-block;" >
+				<div class="panel-heading">
+					<h1 class="panel-title"><a href="{% url 'sensorss' %}?key={{ key.sensor.key }}"><b>{{ key.name }}</b></a></h1>
+				</div>
+				<div class="panel-body"><center>
+					 {% for mes in value %}
+			
+				<div id="{{ mes.sensor.key }}{{ mes.unit.name }}" class="gauge"  style="display: inline-block; width: 270px;" data-value="{{ mes.value }}"></div>
+				
+				
+				 {% endfor %}
+				 				   <form action="{% url 'sensorss' %}">
+						<div class="form-group">
+<input type="hidden" name="key" value="{{ key.sensor.key }}">
+						</div>
+						<center><button type="submit" class="btn btn-default" style="background-color: black; color: white;">Szczegóły</button></center>
+					</form>
+				 <p class="pull-right"><span class="label label-default">{{ key.sensor.last_synchro|date:"d.m.Y - H:i:s" }}</span>
+
+				 
+				 </center>
+
+				</div>
+			</div>
+			</center>
+			 {% endfor %}
+</div>
+					<script src="{% static 'raphael-2.1.4.min.js' %}"></script>
+    <!--<script src="../justgage-1.0.1.js"></script>-->
+	    <script src="{% static 'justgage.js' %}"></script>
+		  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+  <script src="{% static 'morris.js' %}"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.js"></script>
+  <script src="{% static 'lib/example.js' %}"></script>
+
+
+			     <script>
+document.addEventListener("DOMContentLoaded", function(event) {
+
+
+	 
+	
+	 {% for key, value in mes.items %}
+	 					 {% for mes in value %}
+
+	
+	var g1 = new JustGage({
+        id: "{{ mes.sensor.key }}{{ mes.unit.name }}",
+        min: {{ mes.unit.min }},
+        max: {{ mes.unit.max }},
+        title: "{{ mes.unit.name }}",
+        label: "{{ mes.unit.unit }}",
+	
+		 levelColors: ["{{ mes.unit.color }}"],
+        gaugeWidthScale: 0.5
+      });
+	   {% endfor %}
+	  			 {% endfor %}
+
+
+  });
+    </script>
+{% endblock %}

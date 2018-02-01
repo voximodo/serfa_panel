@@ -1,0 +1,83 @@
+{% extends 'base_h.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+			{% load staticfiles %}
+
+  <div class="col-sm-6">
+ <center><div id="zajetosc" class="gauge"  style="display: inline-block; width: 200px;"" data-value="522"></div> 
+  		<div class="panel panel-default" style="display: inline-block;  width: 400px;" >
+				<div class="panel-heading">
+					<h1 class="panel-title"><span class="glyphicon glyphicon-random"></span>  <strong>Witaj {{ username }}!</strong></h1>
+				</div>
+				<div class="list-group">
+				 
+					<a href="{% url 'changepassword' %}" class="list-group-item">Zmień hasło</a>
+				
+				</div>
+			</div>
+			</center>
+			{% for key, value in mes.items %}
+			<center>
+			  		<div class="panel panel-default" style="display: inline-block;" >
+				<div class="panel-heading">
+					<h1 class="panel-title"><b>{{ key.name }}</b></h1>
+				</div>
+				<div class="panel-body"><center>
+					 {% for mes in value %}
+			
+				<div id="{{ mes.unit.name }}" class="gauge"  style="display: inline-block; width: 270px;" data-value="{{ mes.value }}"></div>
+				
+				
+				 {% endfor %}</center>
+<div id="zajetosc" class="gauge"  style="display: inline-block; width: 200px;"" data-value="522"></div>
+				</div>
+			</div>
+			</center>
+			 {% endfor %}
+</div>
+					<script src="{% static 'raphael-2.1.4.min.js' %}"></script>
+    <!--<script src="../justgage-1.0.1.js"></script>-->
+	    <script src="{% static 'justgage.js' %}"></script>
+		  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+  <script src="{% static 'morris.js' %}"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.js"></script>
+  <script src="{% static 'lib/example.js' %}"></script>
+
+
+			     <script>
+document.addEventListener("DOMContentLoaded", function(event) {
+
+var g22 = new JustGage({
+        id: "zajetosc",
+        min: 0,
+        max: {{ user_sensor.sensor.max }},
+        title: "Zajętość serwera przez dane",
+        label: "",
+		 levelColors: ["#33691E"],
+        gaugeWidthScale: 0.5
+      });
+	  
+	 
+	
+	 {% for unit in units %}
+	
+	var g1 = new JustGage({
+        id: "{{ unit.name }}",
+        min: {{ unit.min }},
+        max: {{ unit.max }},
+        title: "{{ unit.name }}",
+        label: "{{ unit.unit }}",
+	
+		 levelColors: ["{{ unit.color }}"],
+        gaugeWidthScale: 0.5
+      });
+	  
+	  			 {% endfor %}
+
+
+  });
+    </script>
+{% endblock %}

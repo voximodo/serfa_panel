@@ -1,0 +1,20 @@
+{% extends 'base_h.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<div class="col-sm-6">
+ <center>
+  		<div class="panel panel-default" style="display: inline-block;  width: 400px;" >
+				<div class="panel-heading">
+					<h1 class="panel-title"><span class="glyphicon glyphicon-random"></span>      Twoje urządzenia:</h1>
+				</div>
+				<div class="list-group">
+				    {% for user_sensor in sensor_list %}
+					<a href="{% url 'sensorss' %}?key={{ user_sensor.sensor.key }}" class="list-group-item">{{ user_sensor.name }}</a>
+					 {% endfor %}
+				</div>
+			</div>
+			</center>
+			</div>
+{% endblock %}

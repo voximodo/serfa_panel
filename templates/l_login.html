@@ -1,0 +1,45 @@
+{% extends 'login.html' %}
+
+
+
+{% block content %}
+<div class="panel panel-default">
+ <div class="panel-heading">
+					<h2 class="panel-title">
+						<span class="glyphicon glyphicon-log-in"></span> 
+						Logowanie
+					</h2>
+				</div>
+  	<div class="panel-body">
+  <form method="post">
+  	<div class="form-group">
+	<center>
+    {% csrf_token %}
+    {{ form.as_p }}
+	</center>
+	</div>
+	<center>
+    <button type="submit" class="btn btn-default">Zaloguj się</button>
+	</center>
+  </form>
+  </div>
+  </div>
+  
+  <form action="{% url 'signup' %}">
+
+
+						<div class="form-group">
+
+						</div>
+						<center><button type="submit" class="btn btn-default" style="background-color: black; color: white;">Zarejestruj się</button></center>
+					</form>
+					
+						<form action="http://google.com">
+
+
+						<div class="form-group">
+							<input type="hidden" name="" value="">
+						</div>
+						<center><button type="submit" class="btn btn-default" style="background-color: black; color: white;">Przypomnij hasło</button></center>
+					</form>
+{% endblock %}

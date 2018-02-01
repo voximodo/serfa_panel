@@ -1,0 +1,227 @@
+{% extends 'base_h.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<div class="col-sm-6">
+		<div class="alert alert-success alert-dismissible" role="alert">
+				<strong>Ostatnia synchronizacja:</strong> {{ date|date:"d.m.Y - H:i:s" }}
+			</div>		
+
+ <h1>{{ user_sensor.name }}</h1>
+ <center>
+  		<div class="panel panel-default" style="display: inline-block;" >
+				<div class="panel-heading">
+					<h1 class="panel-title"><b> Ostatnie pomiary:</b></h1>
+				</div>
+				<div class="panel-body"><center>
+					 {% for mes in last_mes %}
+			
+				<div id="{{ mes.unit.name }}" class="gauge"  style="display: inline-block; width: 270px;"" data-value="{{ mes.value }}"></div>
+				
+				
+				 {% endfor %}</center>
+				</div>
+			</div>
+			</center><center>
+			{% for key, value in mess.items %}
+			<div class="panel panel-default"  >
+				<div class="panel-heading">
+					<h1 class="panel-title"><b>{{ key }}</b></h1>
+				</div>
+				<div class="panel-body">
+				<center>
+				
+					<div id="{{ key }}chart" style="display: inline-block;  width: 500px;"></div>
+					</center>
+				</div>
+			</div>
+			{% load staticfiles %}
+			 {% endfor %}
+			 </center>
+			 </div>
+			 
+			  <!-- Right Column -->
+	  <div class="col-sm-3" style="float:right">
+
+			<!-- Form --> 
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span class="glyphicon glyphicon-log-in"></span> 
+						Modyfikacja
+					</h3>
+				</div>
+				<div class="panel-body"><center><strong>Nazwa czujnika:</strong></center><br>
+					<form onsubmit="return confirm('Jesteś pewien?');">
+
+						<div class="form-group">
+							<input type="hidden" name="key" value="{{ user_sensor.sensor.key }}">
+							<input type="text" class="form-control" id="nazwa" name="nazwa" placeholder="{{ user_sensor.name }}">
+						</div>
+						<center><button type="submit" class="btn btn-default" >Zmień</button></center>
+					</form>
+					<center>
+					
+					<form onsubmit="return confirm('Jesteś pewien?');">
+
+						<div class="form-group">
+							<input type="hidden" name="key" value="{{ user_sensor.sensor.key }}">
+							<input type="hidden" name="delete" value="1">
+						</div>
+						<center><button type="submit" class="btn btn-default" style="background-color: #B71C1C; color: white;">Usuń czujnik</button></center>
+					</form>
+					
+				</div>
+			</div>
+	
+		 <!-- Right Column -->
+	 
+
+			<!-- Form --> 
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span class="glyphicon glyphicon-log-in"></span> 
+						Wykresy - zakres wartości
+					</h3>
+				</div>
+
+					<center>
+					
+					<form>
+						<div class="form-group">
+							<input type="hidden" name="key" value="{{ user_sensor.sensor.key }}">
+							<input type="hidden" name="days" value="1">
+						</div>
+						<center><button type="" class="btn btn-default" {% ifequal day 1 %}style="background-color: black; color: white;"{% endifequal %}>24h</button></center>
+					</form>
+					<form>
+						<div class="form-group">
+							<input type="hidden" name="key" value="{{ user_sensor.sensor.key }}">
+							<input type="hidden" name="days" value="3">
+						</div>
+						<center><button type="submit" class="btn btn-default" {% ifequal day 3 %}style="background-color: black; color: white;"{% endifequal %}>3 dni</button></center>
+					</form>
+					<form>
+						<div class="form-group">
+							<input type="hidden" name="key" value="{{ user_sensor.sensor.key }}">
+							<input type="hidden" name="days" value="7">
+						</div>
+						<center><button type="submit" class="btn btn-default" {% ifequal day 7 %}style="background-color: black; color: white;"{% endifequal %}>7 dni</button></center>
+					</form>
+					<form>
+						<div class="form-group">
+							<input type="hidden" name="key" value="{{ user_sensor.sensor.key }}">
+							<input type="hidden" name="days" value="14">
+						</div>
+						<center><button type="submit" class="btn btn-default" {% ifequal day 14 %}style="background-color: black; color: white;"{% endifequal %}>14 dni</button></center>
+					</form>
+					<form>
+						<div class="form-group">
+							<input type="hidden" name="key" value="{{ user_sensor.sensor.key }}">
+							<input type="hidden" name="days" value="30">
+						</div>
+						<center><button type="submit" class="btn btn-default" {% ifequal day 30 %}style="background-color: black; color: white;"{% endifequal %}>30 dni</button></center>
+					</form><br>
+					
+				</div>
+				
+					<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span class="glyphicon glyphicon-log-in"></span> 
+						Statystyki
+					</h3>
+				</div>
+
+					<center>
+					<div id="zajetosc" class="gauge"  style="display: inline-block; width: 200px;"" data-value="{{ quan }}"></div><br>
+								<form onsubmit="return confirm('Jesteś pewien? Po wyczyszczeniu nie ma odwrotu.');">
+
+						<div class="form-group">
+							<input type="hidden" name="key" value="{{ user_sensor.sensor.key }}">
+							<input type="hidden" name="clean" value="1">
+						</div>
+						<center><button type="submit" class="btn btn-default" style="background-color: #B71C1C; color: white;">Wyczyść dane</button></center>
+					</form><br>
+					</center>
+				</div>
+				
+			</div>
+		
+
+	  </div><!--/Right Column -->
+	  
+			<script src="{% static 'raphael-2.1.4.min.js' %}"></script>
+    <!--<script src="../justgage-1.0.1.js"></script>-->
+	    <script src="{% static 'justgage.js' %}"></script>
+		  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+  <script src="{% static 'morris.js' %}"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.js"></script>
+  <script src="{% static 'lib/example.js' %}"></script>
+
+
+			
+			     <script>
+document.addEventListener("DOMContentLoaded", function(event) {
+
+var g1 = new JustGage({
+        id: "zajetosc",
+        min: 0,
+        max: {{ user_sensor.sensor.max }},
+        title: "Zajętość serwera przez dane",
+        label: "",
+		 levelColors: ["#33691E"],
+        gaugeWidthScale: 0.5
+      });
+	  
+	  
+
+
+
+	
+	 {% for mes in last_mes %}
+	
+	var g1 = new JustGage({
+        id: "{{ mes.unit.name }}",
+        min: {{ mes.unit.min }},
+        max: {{ mes.unit.max }},
+        title: "{{ mes.unit.name }}",
+        label: "{{ mes.unit.unit }}",
+	
+		 levelColors: ["{{ mes.unit.color }}"],
+        gaugeWidthScale: 0.5
+      });
+	  
+	  			 {% endfor %}
+
+
+  });
+    </script>
+	{% for key, value in mess.items %}
+	<script>
+    
+
+
+/* data stolen from http://howmanyleft.co.uk/vehicle/jaguar_'e'_type */
+
+
+Morris.Line({
+  element: '{{ key }}chart',
+  data: [
+   {% for messs in value %}
+  {y: '{{ messs.date|date:"Y-m-d H:i:s" }}', a: {{ messs.value }}},
+	 {% endfor %}
+  ],
+  xkey: 'y',
+  ykeys: ['a'],
+  postUnits: '{{ value.1.unit.unit }}',
+  lineColors: ['{{ value.1.unit.color }}'],
+  labels: ['{{ value.1.unit.name }}']
+});
+
+</script>
+ {% endfor %}
+{% endblock %}

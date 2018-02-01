@@ -1,0 +1,43 @@
+{% extends 'base_h.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<div class="col-sm-6">
+{% if alert %}
+	<div class="alert alert-danger alert-dismissible" role="alert">
+			
+				<strong>{{ alert }}</strong>
+			</div>		
+{% endif %}
+
+{% if succ %}
+	<div class="alert alert-success alert-dismissible" role="alert">
+			
+				<strong>{{ succ }}</strong>
+			</div>		
+{% endif %}
+
+ <center>
+  			<div class="panel panel-default" style="display: inline-block;  width: 500px;">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span class="glyphicon glyphicon-log-in"></span> 
+						Dodaj czujnik
+					</h3>
+				</div>
+				<div class="panel-body">
+					<form>
+						<div class="form-group">
+							<input type="text" class="form-control" id="name" name="name" placeholder="Nazwij czujnik">
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" id="pwd" name="pwd" placeholder="Klucz autoryzacyjny">
+						</div>
+						<button type="submit" class="btn btn-default">Dodaj</button>
+					</form>
+				</div>
+			</div>
+			</center>
+			</div>
+{% endblock %}
